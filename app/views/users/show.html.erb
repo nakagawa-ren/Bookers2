@@ -1,37 +1,71 @@
-<h2> User info </h2>
-<%= attachment_image_tag @user, :profile_image, :fill, 100, 100, format: 'jpeg', fallback: "no_image.jpg" %>
-<table>
-  <tbody>
-    <tr>
-      <th>name</th>
-      <th><%= @user.name %></th>
-    </tr>
-    <tr>
-      <th>introduction</th>
-      <th><%= @user.introduction %></th>
-    </tr>
-  </tbody>
-</table>
+<main>
+  <p id="notice">Signed in successfully.</p>
+  <div class="container px-5 px-sm-0">
+    <div class="row">
+      <div class="col-md-3">
+            <h2> User info </h2>
+            <%= attachment_image_tag @user, :profile_image, :fill, 100, 100, format: 'jpeg', fallback: "no_image.jpg" %>
+            <table class="table">
+              <tbody>
+                <tr>
+                  <th>name</th>
+                  <th><%= @user.name %></th>
+                </tr>
+                <tr>
+                  <th>introduction</th>
+                  <th><%= @user.introduction %></th>
+                </tr>
+              </tbody>
+            </table>
 
-  <% if @user.id == current_user.id %>
-    <p><%= link_to "プロフィール編集", edit_user_path(@user) %></p>
-  <% end %>
+            <div class="row">
+              <% if @user.id == current_user.id %>
+                <p><%= link_to "プロフィール編集", edit_user_path(@user) %></p>
+              <% end %>
+            </div>
 
+            <h2 class="mt-3">NewBook</h2>
+            <%= form_with model: @book, local:true do |f| %>
+            <div class="form-group">
+              <label for="book_title">Title</label>
+              <%= f.text_field :title%>
+            </div>
+            <div class="book_opinion">
+              <label for="book_opinion">Opinion</label>
+              <%= f.text_field :body%>
+            </div>
+            <div class="form-group">
+              <%= f.submit 'Create Box' %>
+            </div>
+            <% end %>
 
-<h1>NewBook</h1>
-<%= form_with model: @book, local:true do |f| %>
-  <h4>Title</h4>
-  <%= f.text_field :title %>
-  <h4>Opinion</h4>
-  <%= f.text_field :body %>
-  <%= f.submit 'Create Box' %>
-<% end %>
-
-<% @books.each do |book| %>
-<div>
-  <%= link_to book_path(book.id) do %>
-      <p>title：<%= book.title %></p>
-  <% end %>
-  <p>Opinion：<%= book.body %></p>
-</div>
-<% end %>
+            <div class="col-md-8 offset-md-1">
+              <h2>Books</h2>
+            <% @books.each do |book| %>
+              <table class="table table-hover table-inverse">
+                <thead>
+                  <tr>
+                    <th>Title</th>
+                    <th>Opinion</th>
+                    <th colspan="3"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>
+                      <%= link_to book_path(book.id) do %>
+                        <%= book.title %>
+                      <% end %>
+                    </td>
+                    <td>
+                      <%= book.body %>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            <% end %>
+            </div>
+      </div>
+    </div>
+  </div>
+</main>
